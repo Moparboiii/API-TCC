@@ -1,5 +1,30 @@
 {
-    "functions": "api/*.js",
+    "functions": {
+      "api/produtos.js": {
+        "runtime": "nodejs14",
+        "memory": 512
+      },
+      "api/produto.js": {
+        "runtime": "nodejs14",
+        "memory": 512
+      },
+      "api/cadProduto.js": {
+        "runtime": "nodejs14",
+        "memory": 512
+      },
+      "api/registrarVenda.js": {
+        "runtime": "nodejs14",
+        "memory": 512
+      },
+      "api/vendidos.js": {
+        "runtime": "nodejs14",
+        "memory": 512
+      },
+      "api/vendidosById.js": {
+        "runtime": "nodejs14",
+        "memory": 512
+      }
+    },
     "routes": [
       { "src": "/produtos", "dest": "/api/produtos.js" },
       { "src": "/produto/:id", "dest": "/api/produto.js" },
