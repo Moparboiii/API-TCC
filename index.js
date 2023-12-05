@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const connection = require('./db'); // Importe a conexão do arquivo db.js
+const mysql = require('mysql2');
 
 const app = express();
 const port = 5000;
@@ -9,6 +9,27 @@ const port = 5000;
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
+
+// Configurações de conexão
+const dbConfig = {
+  host: '192.168.1.5',
+  user: 'api',
+  password: 'api123',
+  database: 'mercadinho'
+};
+
+// Criação da conexão
+const connection = mysql.createConnection(dbConfig);
+
+// Conectar ao banco de dados
+connection.connect((err) => {
+  if (err) {
+    console.error('Erro ao conectar ao banco de dados:', err);
+    process.exit(1);
+  } else {
+    console.log('Conexão ao banco de dados estabelecida.');
+  }
+});
 
 // Rota para consultar todos os produtos
 app.get('/produtos', (req, res) => {
@@ -59,68 +80,81 @@ app.put('/atualizarProduto/:id', (req, res) => {
   const productId = req.params.id;
   const { nome, preco, quantidade } = req.body;
 
-  connection.query(`UPDATE produtos SET nome = ?, preco = ?, quantidade = ? WHERE id_produto = ?`, [nome, preco, quantidade, productId], (err, result) => {
-    if (err) {
-      res.status(500).json({ error: 'Erro ao atualizar o produto.' });
-    } else {
-      if (result.affectedRows > 0) {
-        res.status(200).json({ mensagem: 'Produto atualizado com sucesso.' });
+  connection.query(
+    `UPDATE produtos SET nome = ?, preco = ?, quantidade = ? WHERE id_produto = ?`,
+    [nome, preco, quantidade, productId],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ error: 'Erro ao atualizar o produto.' });
       } else {
-        res.status(404).json({ error: 'Produto não encontrado.' });
+        if (result.affectedRows > 0) {
+          res.status(200).json({ mensagem: 'Produto atualizado com sucesso.' });
+        } else {
+          res.status(404).json({ error: 'Produto não encontrado.' });
+        }
       }
     }
-  }
   );
 });
 
-
-// Cadastrar um produto
+// Rota para cadastrar um produto
 app.post('/cadProduto', (req, res) => {
-  connection.query(`INSERT INTO produtos (nome, preco, quantidade) VALUES (?, ?, ?)`, [req.body.nome, req.body.preco, req.body.quantidade], (error, results) => {
-    if (error) {
-      return res.status(500).send({ error: error })
-    }
-    response = {
-      mensagem: 'Produto cadastrado com sucesso',
-      produtoCriado: {
-        id_produto: results.insertId,
-        nome: req.body.nome,
-        preco: req.body.preco,
-        quantidade: req.body.quantidade
+  connection.query(
+    `INSERT INTO produtos (nome, preco, quantidade) VALUES (?, ?, ?)`,
+    [req.body.nome, req.body.preco, req.body.quantidade],
+    (error, results) => {
+      if (error) {
+        return res.status(500).send({ error: error });
       }
+      response = {
+        mensagem: 'Produto cadastrado com sucesso',
+        produtoCriado: {
+          id_produto: results.insertId,
+          nome: req.body.nome,
+          preco: req.body.preco,
+          quantidade: req.body.quantidade
+        }
+      };
+      return res.status(201).send(response);
     }
-    return res.status(201).send(response)
-  })
-})
+  );
+});
 
+// Rota para registrar uma venda
 app.post('/registrar-venda', (req, res) => {
   const { itens, data_hora, valor_total } = req.body;
 
   // Primeiro, insira os dados da venda na tabela de vendas
-  connection.query('INSERT INTO vendas (data_hora, valor_total) VALUES (?, ?)', [data_hora, valor_total], (err, result) => {
-    if (err) {
-      console.error('Erro ao registrar a venda:', err);
-      res.status(500).json({ error: 'Erro ao registrar a venda.' });
-    } else {
-      const idVenda = result.insertId;
+  connection.query(
+    'INSERT INTO vendas (data_hora, valor_total) VALUES (?, ?)',
+    [data_hora, valor_total],
+    (err, result) => {
+      if (err) {
+        console.error('Erro ao registrar a venda:', err);
+        res.status(500).json({ error: 'Erro ao registrar a venda.' });
+      } else {
+        const idVenda = result.insertId;
 
-      // Em seguida, insira os itens vendidos na tabela de itens_vendidos
-      const values = itens.map((item) => [idVenda, item.id_produto, item.quantidade]);
-      connection.query('INSERT INTO itens_vendidos (id_venda, id_produto, quantidade) VALUES ?', [values], (err, result) => {
-        if (err) {
-          console.error('Erro ao registrar os itens vendidos:', err);
-          res.status(500).json({ error: 'Erro ao registrar os itens vendidos.' });
-        } else {
-          res.status(201).json('Venda registrada com sucesso.');
-        }
+        // Em seguida, insira os itens vendidos na tabela de itens_vendidos
+        const values = itens.map((item) => [idVenda, item.id_produto, item.quantidade]);
+        connection.query(
+          'INSERT INTO itens_vendidos (id_venda, id_produto, quantidade) VALUES ?',
+          [values],
+          (err, result) => {
+            if (err) {
+              console.error('Erro ao registrar os itens vendidos:', err);
+              res.status(500).json({ error: 'Erro ao registrar os itens vendidos.' });
+            } else {
+              res.status(201).json('Venda registrada com sucesso.');
+            }
+          }
+        );
       }
-      );
     }
-  }
   );
 });
 
-// Rota para consultar todos as vendas
+// Rota para consultar todas as vendas
 app.get('/vendidos', (req, res) => {
   connection.query('SELECT * FROM vendas', (err, results) => {
     if (err) {
@@ -160,8 +194,20 @@ app.get('/vendidosById/:id', (req, res) => {
   });
 });
 
+// Encerrar a conexão e encerrar o aplicativo ao receber SIGINT
+process.on('SIGINT', () => {
+  connection.end((err) => {
+    if (err) {
+      console.error('Erro ao fechar a conexão:', err);
+      process.exit(1);
+    } else {
+      console.log('Conexão fechada. Encerrando a aplicação.');
+      process.exit(0);
+    }
+  });
+});
 
-// Inicie o servidor
+// Iniciar o servidor
 app.listen(port, () => {
   console.log(`Servidor está rodando na porta ${port}.`);
 });
