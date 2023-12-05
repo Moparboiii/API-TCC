@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 // Rota para consultar todos as vendas
-router.get('/vendidos', (req, res) => {
+router.get('/', (req, res) => {
     connection.query('SELECT * FROM vendas', (err, results) => {
         if (err) {
             console.error('Erro na consulta:', err);
