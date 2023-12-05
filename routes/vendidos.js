@@ -1,8 +1,12 @@
-// api/vendidos.js
+// api/registrarVenda.js
 
-const connection = require('../db.jsx');
+const connection = require('../db.js');
 
-module.exports = async (req, res) => {
+const express = require("express");
+const router = express.Router();
+
+// Rota para consultar todos as vendas
+router.get('/vendidos', (req, res) => {
     connection.query('SELECT * FROM vendas', (err, results) => {
         if (err) {
             console.error('Erro na consulta:', err);
@@ -15,4 +19,6 @@ module.exports = async (req, res) => {
             }
         }
     });
-};
+});
+
+module.exports = router;

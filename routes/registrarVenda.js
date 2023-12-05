@@ -1,10 +1,14 @@
 // api/registrarVenda.js
 
-const connection = require('../db.jsx');
+const connection = require('../db.js');
 
-module.exports = async (req, res) => {
+const express = require("express");
+const router = express.Router();
+
+router.post('/registrar-venda', (req, res) => {
     const { itens, data_hora, valor_total } = req.body;
 
+    // Primeiro, insira os dados da venda na tabela de vendas
     connection.query('INSERT INTO vendas (data_hora, valor_total) VALUES (?, ?)', [data_hora, valor_total], (err, result) => {
         if (err) {
             console.error('Erro ao registrar a venda:', err);
@@ -26,4 +30,6 @@ module.exports = async (req, res) => {
         }
     }
     );
-};
+});
+
+module.exports = router;

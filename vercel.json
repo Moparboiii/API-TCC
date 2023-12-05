@@ -1,36 +1,15 @@
 {
-    "functions": {
-      "api/produtos.js": {
-        "runtime": "nodejs14",
-        "memory": 512
-      },
-      "api/produto.js": {
-        "runtime": "nodejs14",
-        "memory": 512
-      },
-      "api/cadProduto.js": {
-        "runtime": "nodejs14",
-        "memory": 512
-      },
-      "api/registrarVenda.js": {
-        "runtime": "nodejs14",
-        "memory": 512
-      },
-      "api/vendidos.js": {
-        "runtime": "nodejs14",
-        "memory": 512
-      },
-      "api/vendidosById.js": {
-        "runtime": "nodejs14",
-        "memory": 512
-      }
-    },
+    "version": 2,
+    "builds": [
+        {
+            "src": "./index.js",
+            "use": "@vercel/node"
+        }
+    ],
     "routes": [
-      { "src": "/produtos", "dest": "/api/produtos.js" },
-      { "src": "/produto/:id", "dest": "/api/produto.js" },
-      { "src": "/cadProduto", "dest": "/api/cadProduto.js" },
-      { "src": "/registrar-venda", "dest": "/api/registrarVenda.js" },
-      { "src": "/vendidos", "dest": "/api/vendidos.js" },
-      { "src": "/vendidosById/:id", "dest": "/api/vendidosById.js" }
+        {
+            "src": "/(.*)",
+            "dest": "/"
+        }
     ]
-  }  
+}

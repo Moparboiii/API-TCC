@@ -1,8 +1,9 @@
-// api/produtos.js
+const connection = require('../db.js');
 
-const connection = require('../db.jsx');
+const express = require("express");
+const router = express.Router();
 
-module.exports = async (req, res) => {
+router.get('/produtos', (req, res) => {
     connection.query('SELECT * FROM produtos', (err, results) => {
         if (err) {
             console.error('Erro na consulta:', err);
@@ -15,4 +16,6 @@ module.exports = async (req, res) => {
             }
         }
     });
-};
+});
+
+module.exports = router;
