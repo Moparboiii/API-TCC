@@ -3,7 +3,7 @@ const connection = require('../db.js');
 const express = require("express");
 const router = express.Router();
 
-router.get('/produtos', (req, res) => {
+router.get('/', (req, res) => {
     connection.query('SELECT * FROM produtos', (err, results) => {
         if (err) {
             console.error('Erro na consulta:', err);
