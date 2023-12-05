@@ -5,7 +5,7 @@ const connection = require('../db.js');
 const express = require("express");
 const router = express.Router();
 
-router.get('/produtoById/:id', (req, res) => {
+router.get('/', (req, res) => {
     const productId = req.params.id;
     connection.query(`SELECT * FROM produtos WHERE id_produto = ?`, [productId], (err, result) => {
         if (err) {

@@ -19,10 +19,10 @@ app.use(cors());
 // Routes
 app.use("/produtos", produtos);
 app.use("/cadprodutos", cadProduto);
-app.use("/deleteProduto", produtoDeleteiD);
-app.use("/produtoById", produtoById);
+app.use("/deleteProduto/:id", produtoDeleteiD);
+app.use("/produtoById/:id", produtoById);
 app.use("/vendidos", vendidos);
-app.use("/vendidosById", vendidosById);
+app.use("/vendidosById/:id", vendidosById);
 app.use("/registrar-venda", registrarVenda);
 app.use("/atualizarProduto", atualizarProduto);
 

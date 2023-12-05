@@ -5,7 +5,7 @@ const connection = require('../db.js');
 const express = require("express");
 const router = express.Router();
 
-router.post('/registrar-venda', (req, res) => {
+router.post('/', (req, res) => {
     const { itens, data_hora, valor_total } = req.body;
 
     // Primeiro, insira os dados da venda na tabela de vendas

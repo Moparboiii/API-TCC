@@ -5,7 +5,7 @@ const connection = require('../db.js');
 const express = require("express");
 const router = express.Router();
 
-router.delete('/deleteProduto/:id', (req, res) => {
+router.delete('/', (req, res) => {
     const productId = req.params.id;
     connection.query(`DELETE FROM produtos WHERE id_produto = ?`, [productId], (err, result) => {
         if (err) {

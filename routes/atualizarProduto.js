@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 
-router.put('/atualizarProduto/:id', (req, res) => {
+router.put('/', (req, res) => {
     const productId = req.params.id;
     const { nome, preco, quantidade } = req.body;
 

@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 
-router.post('/cadProduto', (req, res) => {
+router.post('/', (req, res) => {
     connection.query(`INSERT INTO produtos (nome, preco, quantidade) VALUES (?, ?, ?)`, [req.body.nome, req.body.preco, req.body.quantidade], (error, results) => {
         if (error) {
             return res.status(500).send({ error: error })

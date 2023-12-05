@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 // Rota para consultar todos as vendas
-router.get('/vendidosById/:id', (req, res) => {
+router.get('/', (req, res) => {
     const productId = req.params.id;
 
     const query = `
