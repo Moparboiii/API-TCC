@@ -8,7 +8,7 @@ const router = express.Router();
 // Rota para consultar todos as vendas
 router.get('/', (req, res) => {
     const productId = req.params.id;
-
+    console.log(productId);
     const query = `
     SELECT itens_vendidos.id_produto, produtos.nome, produtos.preco, itens_vendidos.quantidade
     FROM itens_vendidos
