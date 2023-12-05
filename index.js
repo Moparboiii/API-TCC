@@ -165,8 +165,3 @@ app.get('/vendidosById/:id', (req, res) => {
 app.listen(port, () => {
   console.log(`Servidor está rodando na porta ${port}.`);
 });
-
-process.on('SIGINT', () => {
-  connection.end();
-  process.exit();
-});
