@@ -1,7 +1,7 @@
 
 const mysql = require('mysql2');
 
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
   host: '192.168.1.5',       // Substitua pelo host do seu banco de dados
   user: 'api',     // Substitua pelo usuário do seu banco de dados
   password: 'api123',   // Substitua pela senha do seu banco de dados

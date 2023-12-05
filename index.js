@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors'); // Importe o módulo cors, preciso usar esssa porra pra acessar diferentes urls entre o APP e a API
 const bodyParser = require('body-parser');
-const connection = require('./db.js');
 
 const app = express();
 const port = 5000; // Escolha uma porta para o servidor
@@ -9,6 +8,23 @@ const port = 5000; // Escolha uma porta para o servidor
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
+
+
+// const mysql = require('mysql2');
+
+// const connection = mysql.createPool({
+//   host: '192.168.1.5',       // Substitua pelo host do seu banco de dados
+//   user: 'api',     // Substitua pelo usuário do seu banco de dados
+//   password: 'api123',   // Substitua pela senha do seu banco de dados
+//   database: 'mercadinho',   // Substitua pelo nome do seu banco de dados
+// });
+// connection.connect((err) => {
+//   if (err) {
+//     console.error('Erro ao conectar ao banco de dados:', err);
+//   } else {
+//     console.log('Conexão ao banco de dados estabelecida.');
+//   }
+// });
 
 // Rota para consultar todos os produtos
 app.get('/produtos', (req, res) => {

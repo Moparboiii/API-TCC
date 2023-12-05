@@ -1,13 +1,13 @@
 const express = require('express');
 const cors = require('cors');
-const cadProduto = require("./routes/cadProduto")
-const produtoById = require("./routes/produtoById")
-const produtos = require("./routes/produtos")
-const vendidos = require("./routes/vendidos")
-const vendidosById = require("./routes/vendidosById")
-const registrarVenda = require("./routes/registrarVenda")
-const produtoDeleteiD = require("./routes/produtoDeleteId")
-const atualizarProduto = require("./routes/atualizarProduto")
+const cadProduto = require("./cadProduto")
+const produtoById = require("./produtoById")
+const produtos = require("./produtos")
+const vendidos = require("./vendidos")
+const vendidosById = require("./vendidosById")
+const registrarVenda = require("./registrarVenda")
+const produtoDeleteiD = require("./produtoDeleteId")
+const atualizarProduto = require("./atualizarProduto")
 
 const router = express.Router();
 
