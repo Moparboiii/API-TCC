@@ -18,4 +18,5 @@ app.use("/home", home);
 
 // connection
 const port = process.env.PORT || 5000;
+const database = process.env.DATABASE_URL || 'mysql://vxjx64ri36j77uy1luts:pscale_pw_iPJApZeyuAGHKnzHct1mk25UsAk7I4rDL5GxcITJI9d@aws.connect.psdb.cloud/mercadinho?ssl={"rejectUnauthorized":true}'
 app.listen(port, () => console.log(`Listening to port ${port}`));

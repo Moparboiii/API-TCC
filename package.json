@@ -52,7 +52,7 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "tailwind.config.js",
   "engines": {
-    "node": "14.x"
+    "node": "18.x"
   },
   "keywords": [],
   "author": "",
