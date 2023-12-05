@@ -5,24 +5,19 @@ const connection = require('../db.js');
 const express = require("express");
 const router = express.Router();
 
-
-router.post('/cadProduto', (req, res) => {
-    connection.query(`INSERT INTO produtos (nome, preco, quantidade) VALUES (?, ?, ?)`, [req.body.nome, req.body.preco, req.body.quantidade], (error, results) => {
-        if (error) {
-            return res.status(500).send({ error: error })
-        }
-        response = {
-            mensagem: 'Produto cadastrado com sucesso',
-            produtoCriado: {
-                id_produto: results.insertId,
-                nome: req.body.nome,
-                preco: req.body.preco,
-                quantidade: req.body.quantidade
+router.get('/produtoById/:id', (req, res) => {
+    const productId = req.params.id;
+    connection.query(`SELECT * FROM produtos WHERE id_produto = ?`, [productId], (err, result) => {
+        if (err) {
+            res.status(500).json({ error: 'Erro ao buscar o produto.' });
+        } else {
+            if (result.length > 0) {
+                res.json(result[0]);
+            } else {
+                res.status(404).json({ error: 'Produto não encontrado.' });
             }
         }
-        return res.status(201).send(response)
-    })
-})
-
+    });
+});
 
 module.exports = router;
